@@ -1,8 +1,24 @@
-[gd_scene load_steps=2 format=3 uid="uid://enmafh4gqwx1"]
+[gd_scene load_steps=5 format=3 uid="uid://enmafh4gqwx1"]
 
-[ext_resource type="Texture2D" uid="uid://pu0nmcoyep3e" path="res://assets/sprites/Sprite-0001.png" id="1_kc0w3"]
+[ext_resource type="Script" path="res://scenes/player.gd" id="1_tk18p"]
+[ext_resource type="Texture2D" uid="uid://c2thqt3n400tb" path="res://assets/sprites/spaceship.png" id="2_ado8t"]
+[ext_resource type="PackedScene" uid="uid://dmmyhr3qihe0u" path="res://scenes/bullet.tscn" id="2_beaev"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mckwr"]
+radius = 20.025
 
 [node name="Player" type="Area2D"]
+script = ExtResource("1_tk18p")
+Bullet = ExtResource("2_beaev")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_kc0w3")
+texture = ExtResource("2_ado8t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_mckwr")
+
+[node name="shooter_outer_left" type="Node2D" parent="."]
+position = Vector2(6, -11)
+
+[node name="shooter_outer_right" type="Node2D" parent="."]
+position = Vector2(6, 11)
