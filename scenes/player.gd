@@ -9,11 +9,13 @@ extends Area2D
 var direction: float = 0.0 # direction the sprite is facing
 var velocity: Vector2 = Vector2.ZERO
 
+@export var fire_rate: float = 10.0 # How many times each shooter can fire a second
 var current_shooter: int = 0
 var num_shooters: int = 2
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$FireRateTimer.wait_time = 1.0 / fire_rate
 	pass # Replace with function body.
 
 
@@ -46,12 +48,14 @@ func _process(delta):
 	
 	# Shooting
 	if Input.is_action_pressed("primary_shoot"):
-		#var bullet = load("res://scenes/bullet.tscn").instance()
-		var bullet = Bullet.instantiate()
-		bullet.direction = direction
-		if current_shooter == 0: 
-			bullet.position = $shooter_outer_left.global_position
-		else:
-			bullet.position = $shooter_outer_right.global_position
-		current_shooter = (current_shooter + 1) % num_shooters
-		get_parent().add_child(bullet)
+		if $FireRateTimer.time_left <= 0:
+			var bullet = Bullet.instantiate()
+			bullet.direction = direction
+			if current_shooter == 0: 
+				bullet.position = $shooter_outer_left.global_position
+			else:
+				bullet.position = $shooter_outer_right.global_position
+			
+			$FireRateTimer.start()
+			current_shooter = (current_shooter + 1) % num_shooters
+			get_parent().add_child(bullet)
