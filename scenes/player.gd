@@ -1,5 +1,7 @@
 extends Area2D
 
+signal hit
+
 @export var Bullet: PackedScene
 
 @export var acceleration: float = 50.0
@@ -59,3 +61,7 @@ func _process(delta):
 			$FireRateTimer.start()
 			current_shooter = (current_shooter + 1) % num_shooters
 			get_parent().add_child(bullet)
+
+
+func _on_body_entered(body):
+	hit.emit()
